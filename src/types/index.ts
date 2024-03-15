@@ -25,7 +25,7 @@ export interface PriorityColorMapping {
 export interface Filters {
   search: string;
   status: Status;
-  priority: Priority[];
+  priorities: Priority[];
 }
 
 export interface TodoItem {

@@ -1,8 +1,8 @@
 import Todo from "../Todo";
+import todoSlice from "./todoSlice";
 import { Col, Row, Input, Button, Select, Tag, Space } from "antd";
 import { Priority, TodoItem } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodoAction } from "../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { LIST_PRIORITIES, PRIORITY_COLOR_MAPPING } from "../../utils/constants";
@@ -22,7 +22,7 @@ export default function TodoList() {
     if (!todoName) return;
 
     dispatch(
-      addTodoAction({
+      todoSlice.actions.addTodo({
         id: uuidv4(),
         name: todoName,
         completed: false,

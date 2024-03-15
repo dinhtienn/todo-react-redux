@@ -1,5 +1,5 @@
 import { GlobalState, Status, TodoItem } from "../types";
-import { createSelector } from "reselect";
+import { createSelector } from "@reduxjs/toolkit";
 
 // export const todoListSelector = (state: GlobalState) =>
 //   state.todoList.filter((item: TodoItem) =>
@@ -9,20 +9,21 @@ import { createSelector } from "reselect";
 export const todoListSelector = (state: GlobalState) => state.todoList;
 export const searchTextSelector = (state: GlobalState) => state.filters.search;
 export const statusSelector = (state: GlobalState) => state.filters.status;
-export const prioritySelector = (state: GlobalState) => state.filters.priority;
+export const prioritiesSelector = (state: GlobalState) =>
+  state.filters.priorities;
 
 export const todoRemainingSelector = createSelector(
   todoListSelector,
   searchTextSelector,
   statusSelector,
-  prioritySelector,
-  (todoList, searchText, status, priority) =>
+  prioritiesSelector,
+  (todoList, searchText, status, priorities) =>
     todoList.filter(
       (item: TodoItem) =>
         item.name.toLowerCase().includes(searchText.toLowerCase()) &&
         (status === Status.All ||
           (status === Status.Completed && item.completed) ||
           (status === Status.Todo && !item.completed)) &&
-        (!priority.length || priority.includes(item.priority))
+        (!priorities.length || priorities.includes(item.priority))
     )
 );

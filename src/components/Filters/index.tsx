@@ -1,3 +1,4 @@
+import filtersSlice from "./filtersSlice";
 import {
   Col,
   Row,
@@ -15,14 +16,9 @@ import {
 } from "../../utils/constants";
 import { Status, Priority } from "../../types";
 import {
-  searchFilterChange,
-  statusFilterChange,
-  priorityFilterChange,
-} from "../../redux/actions";
-import {
   searchTextSelector,
   statusSelector,
-  prioritySelector,
+  prioritiesSelector,
 } from "../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,16 +31,16 @@ export default function Filters() {
   const dispatch = useDispatch();
   const searchText = useSelector(searchTextSelector);
   const status = useSelector(statusSelector);
-  const priority = useSelector(prioritySelector);
+  const priorities = useSelector(prioritiesSelector);
 
   const handleChangeSearchText = (event: React.ChangeEvent<HTMLInputElement>) =>
-    dispatch(searchFilterChange(event.target.value));
+    dispatch(filtersSlice.actions.searchFilterChange(event.target.value));
 
   const handleChangeStatus = (event: RadioChangeEvent) =>
-    dispatch(statusFilterChange(event.target.value));
+    dispatch(filtersSlice.actions.statusFilterChange(event.target.value));
 
   const handleChangePriority = (value: Priority[]) =>
-    dispatch(priorityFilterChange(value));
+    dispatch(filtersSlice.actions.priorityFilterChange(value));
 
   return (
     <Row justify="center">
@@ -86,7 +82,7 @@ export default function Filters() {
           placeholder="Please select"
           style={{ width: "100%" }}
           onChange={handleChangePriority}
-          value={priority}
+          value={priorities}
         >
           {LIST_PRIORITIES.map((item: Priority, index: number) => (
             <Option value={item} label={item} key={index}>
