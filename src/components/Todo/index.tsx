@@ -1,24 +1,14 @@
 import { Row, Tag, Checkbox } from "antd";
-import { useState } from "react";
-import { Priority, PriorityColorMapping } from "../../types";
+import { TodoItem } from "../../types";
+import { PRIORITY_COLOR_MAPPING } from "../../utils/constants";
+import { toggleTodoStatus } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
-const priorityColorMapping: PriorityColorMapping = {
-  High: "red",
-  Medium: "blue",
-  Low: "gray",
-};
-
-export default function Todo({
-  name,
-  priority,
-}: {
-  name: string;
-  priority: Priority;
-}) {
-  const [checked, setChecked] = useState(false);
+export default function Todo({ data }: { data: TodoItem }) {
+  const dispatch = useDispatch();
 
   const toggleCheckbox = () => {
-    setChecked(!checked);
+    dispatch(toggleTodoStatus(data.id));
   };
 
   return (
@@ -26,14 +16,16 @@ export default function Todo({
       justify="space-between"
       style={{
         marginBottom: 3,
-        ...(checked ? { opacity: 0.5, textDecoration: "line-through" } : {}),
+        ...(data.completed
+          ? { opacity: 0.5, textDecoration: "line-through" }
+          : {}),
       }}
     >
-      <Checkbox checked={checked} onChange={toggleCheckbox}>
-        {name}
+      <Checkbox checked={data.completed} onChange={toggleCheckbox}>
+        {data.name}
       </Checkbox>
-      <Tag color={priorityColorMapping[priority]} style={{ margin: 0 }}>
-        {priority}
+      <Tag color={PRIORITY_COLOR_MAPPING[data.priority]} style={{ margin: 0 }}>
+        {data.priority}
       </Tag>
     </Row>
   );
